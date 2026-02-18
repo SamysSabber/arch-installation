@@ -113,21 +113,8 @@ pacman -S grub efibootmgr --noconfirm
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 
-#Yay installieren
-pacman -S --needed git base-devel -y
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-cd ~
-
 #Dependencies und Apps
 pacman -S hyprland xdg-desktop-portal-hyprland dolphin kitty
-sudo pacman -S libvirt virt-manager qemu-full pipewire-pulse wireplumber easyeffects pavucontrol steam neovim alacritty bitwarden obsidian btop spotify-launcher hyprshot hyprpolkitagent -y
-
-yay -S visual-studio-code-bin vesktop zen-browser-bin peaclock protonup-qt brave-bin -y
-
-#Fonts und Icons
-sudo pacman -S ttf-jetbrains-mono-nerd -y
 
 #GDM Greeter
 pacman -S gdm --noconfirm
