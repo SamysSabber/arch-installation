@@ -1,7 +1,7 @@
 #Festplatte wählen
 lsblk
-read -p "Festplatte wählen: (nicht nvme0nXp oder sdX)" DISK
-read -p "Hostname für das Gerät setzen" HOSTNAME
+read -p "Festplatte wählen: (nicht nvme0nXp oder sdX) " DISK
+read -p "Hostname für das Gerät setzen " HOSTNAME
 
 #Deutsche Tastatur laden im Archiso environment
 loadkeys de-latin1
