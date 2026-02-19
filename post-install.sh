@@ -1,3 +1,9 @@
+sudo pacman -Syu --needed base-devel git --noconfirm
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ~
+
 #Apps
 sudo pacman -S alacritty neovim obsidian bitwarden steam btop \
     spotify-launcher hyprshot hyprpolkitagent --noconfirm
