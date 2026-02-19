@@ -120,7 +120,6 @@ pacman -S hyprland xdg-desktop-portal-hyprland dolphin kitty
 pacman -S gdm --noconfirm
 systemctl enable gdm
 
-
 EOF
 
 #Unmounten und Reboot
