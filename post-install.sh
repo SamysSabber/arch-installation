@@ -23,6 +23,7 @@ sudo systemctl enable --now libvirtd
 sudo usermod -aG libvirt $USER
 
 #Config
-git clone https://github.com/Samyssabber/
-
-
+git clone https://github.com/SamysSabber/arch-installation.git
+cd arch-installation
+cp -r .config ~/
+rm -rf arch-installation
