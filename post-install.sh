@@ -9,7 +9,7 @@ cd ~
 
 #Apps
 sudo pacman -S wofi alacritty neovim obsidian bitwarden steam btop \
-    spotify-launcher hyprshot hyprpolkitagent --noconfirm
+    spotify-launcher hyprshot hyprpolkitagent bluetui --noconfirm
 
 yay -S visual-studio-code-bin vesktop zen-browser-bin peaclock protonup-qt brave-bin --noconfirm
 
