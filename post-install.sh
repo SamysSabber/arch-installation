@@ -1,7 +1,9 @@
+#!/bin/bash
+
 sudo pacman -Syu --needed base-devel git --noconfirm
 git clone https://aur.archlinux.org/yay.git
 cd yay
-makepkg -si
+makepkg -si --noconfirm
 cd ~
 
 #Apps
@@ -15,7 +17,7 @@ sudo pacman -S ttf-jetbrains-mono-nerd noto-fonts-emoji --noconfirm
 
 #Sound Utils
 sudo pacman -S pipewire pavucontrol easyeffects wireplumber pipewire-pulse --noconfirm
-sudo systemctl --user enable --now pipewire pipewire-pulse wireplumber
+systemctl --user enable --now pipewire pipewire-pulse wireplumber
 
 #VM QEMU/KVM
 sudo pacman -S qemu-full libvirt virt-manager --noconfirm
@@ -24,6 +26,6 @@ sudo usermod -aG libvirt $USER
 
 #Config
 git clone https://github.com/SamysSabber/arch-installation.git
-cd arch-installation
-cp -r .config ~/
-rm -rf arch-installation
+mkdir -p ~/.config
+cp -r arch-installation/alacritty arch-installation/btop arch-installation/hypr arch-installation/nvim ~/.config/
+rm -rf ~/arch-installation
