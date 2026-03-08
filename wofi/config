@@ -1,0 +1,14 @@
+mode=drun
+width=800
+height=500
+prompt=Search...
+term=alacritty
+hide_scroll=true
+show=drun
+insensitive=true
+allow_markup=true
+allow_images=true
+image_size=24
+gtk_dark=true
+no_actions=true
+key_exit=Escape
