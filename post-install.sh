@@ -27,5 +27,5 @@ sudo usermod -aG libvirt $USER
 #Config
 git clone https://github.com/SamysSabber/arch-installation.git
 mkdir -p ~/.config
-cp -r arch-installation/alacritty arch-installation/btop arch-installation/hypr arch-installation/nvim ~/.config/
+cp -r arch-installation/* ~/.config/
 rm -rf ~/arch-installation
