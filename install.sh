@@ -5,12 +5,18 @@ set -e
 echo "Verfügbare Festplatten:"
 lsblk -d -o NAME,SIZE,TYPE | grep disk
 echo ""
-read -p "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " DISKNAME
+read -rp "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " DISKNAME
+
+# Whitespace entfernen und führendes /dev/ abschneiden falls angegeben
+DISKNAME="${DISKNAME//[[:space:]]/}"
+DISKNAME="${DISKNAME#/dev/}"
 DISK="/dev/$DISKNAME"
 
 #Prüfen ob Disk existiert
 if [ ! -b "$DISK" ]; then
   echo "Fehler: $DISK existiert nicht!"
+  echo "Verfügbare Festplatten:"
+  lsblk -d -o NAME,SIZE,TYPE | grep disk
   exit 1
 fi
 
