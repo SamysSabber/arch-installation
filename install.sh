@@ -1,12 +1,15 @@
 #!/bin/bash
 set -e
 
+# Sicherstellen dass alle read-Aufrufe vom Terminal lesen (z.B. falls Script gepiped wird)
+exec < /dev/tty
+
 #Festplatte wählen
 while true; do
   echo "Verfügbare Festplatten:"
   lsblk -d -o NAME,SIZE,TYPE | grep disk
   echo ""
-  read -r -p "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " DISKNAME < /dev/tty
+  read -r -p "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " DISKNAME
 
   # Whitespace entfernen und führendes /dev/ abschneiden falls angegeben
   DISKNAME="${DISKNAME//[[:space:]]/}"
