@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 #Festplatte wählen
 echo "Verfügbare Festplatten:"
@@ -71,7 +72,7 @@ mount -t btrfs -o subvol=@home,compress=zstd $PART2 /mnt/home
 mount -t btrfs -o subvol=@snapshots,compress=zstd $PART2 /mnt/.snapshots
 
 #Basissystem installieren
-pacstrap -K /mnt base linux linux-firmware vim sudo
+pacstrap -K /mnt base linux linux-firmware vim sudo btrfs-progs
 
 #Mirrorlist ins Livesystem kopieren
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
@@ -89,12 +90,14 @@ hwclock --systohc
 #Sprache im Livesystem setzen
 echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen
 locale-gen
-localectl set-x11-keymap de
 echo "LANG=de_DE.UTF-8" > /etc/locale.conf
 echo "KEYMAP=de-latin1" > /etc/vconsole.conf
 
 #Hostname setzen
 echo "$HOSTNAME" > /etc/hostname
+echo "127.0.0.1 localhost" > /etc/hosts
+echo "::1       localhost" >> /etc/hosts
+echo "127.0.1.1 $HOSTNAME.localdomain $HOSTNAME" >> /etc/hosts
 
 #Root Passwort setzen
 echo "root:$ROOTPASS" | chpasswd
