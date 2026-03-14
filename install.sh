@@ -1,24 +1,34 @@
 #!/bin/bash
 set -e
 
+# Sicherstellen dass alle read-Aufrufe vom Terminal lesen (z.B. falls Script gepiped wird)
+exec < /dev/tty
+
 #Festplatte wählen
-echo "Verfügbare Festplatten:"
-lsblk -d -o NAME,SIZE,TYPE | grep disk
-echo ""
-read -rp "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " DISKNAME
-
-# Whitespace entfernen und führendes /dev/ abschneiden falls angegeben
-DISKNAME="${DISKNAME//[[:space:]]/}"
-DISKNAME="${DISKNAME#/dev/}"
-DISK="/dev/$DISKNAME"
-
-#Prüfen ob Disk existiert
-if [ ! -b "$DISK" ]; then
-  echo "Fehler: $DISK existiert nicht!"
+while true; do
   echo "Verfügbare Festplatten:"
   lsblk -d -o NAME,SIZE,TYPE | grep disk
-  exit 1
-fi
+  echo ""
+  read -r -p "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " DISKNAME
+
+  # Whitespace entfernen und führendes /dev/ abschneiden falls angegeben
+  DISKNAME="${DISKNAME//[[:space:]]/}"
+  DISKNAME="${DISKNAME#/dev/}"
+
+  if [ -z "$DISKNAME" ]; then
+    echo "Fehler: Kein Festplattenname eingegeben. Bitte erneut versuchen."
+    continue
+  fi
+
+  DISK="/dev/$DISKNAME"
+
+  if [ ! -b "$DISK" ]; then
+    echo "Fehler: $DISK existiert nicht. Bitte erneut versuchen."
+    continue
+  fi
+
+  break
+done
 
 #NVMe Partitionsbezeichnung anpassen (nvme0n1 → nvme0n1p1, sda → sda1)
 if [[ $DISKNAME == nvme* ]]; then
