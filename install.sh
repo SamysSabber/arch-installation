@@ -1,15 +1,13 @@
 #!/bin/bash
 set -e
 
-# Sicherstellen dass alle read-Aufrufe vom Terminal lesen (z.B. falls Script gepiped wird)
-exec < /dev/tty
-
 #Festplatte wählen
 while true; do
   echo "Verfügbare Festplatten:"
   lsblk -d -o NAME,SIZE,TYPE | grep disk
   echo ""
-  read -r -p "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " DISKNAME
+  printf "Festplattenname eingeben (z.b. sda, vda, nvme0n1): " > /dev/tty
+  read -r DISKNAME < /dev/tty
 
   # Whitespace entfernen und führendes /dev/ abschneiden falls angegeben
   DISKNAME="${DISKNAME//[[:space:]]/}"
@@ -42,17 +40,22 @@ fi
 echo "Disk: $DISK"
 echo "Boot Partition: $PART1"
 echo "Root Partition: $PART2"
-read -p "Korrekt? (j/n) " CONFIRM
+printf "Korrekt? (j/n) " > /dev/tty
+read -r CONFIRM < /dev/tty
 if [ "$CONFIRM" != "j" ]; then
   echo "Abgebrochen."
   exit 1
 fi
 
-read -p "Hostname für das Gerät setzen: " HOSTNAME
-read -p "Benutzername: " USERNAME
-read -sp "Root Passwort: " ROOTPASS
+printf "Hostname für das Gerät setzen: " > /dev/tty
+read -r HOSTNAME < /dev/tty
+printf "Benutzername: " > /dev/tty
+read -r USERNAME < /dev/tty
+printf "Root Passwort: " > /dev/tty
+read -rs ROOTPASS < /dev/tty
 echo
-read -sp "Benutzer Passwort: " USERPASS
+printf "Benutzer Passwort: " > /dev/tty
+read -rs USERPASS < /dev/tty
 echo
 
 #Deutsche Tastatur laden im Archiso environment
