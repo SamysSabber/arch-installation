@@ -12,10 +12,13 @@ sudo sed -i '/^#\[multilib\]/,/^#Include/{s/^#//}' /etc/pacman.conf
 
 # Basis-Tools + yay bauen
 sudo pacman -Syu --needed base-devel git --noconfirm
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si --noconfirm
-cd ~
+if ! command -v yay &>/dev/null; then
+  rm -rf ~/yay
+  git clone https://aur.archlinux.org/yay.git ~/yay
+  cd ~/yay
+  makepkg -si --noconfirm
+  cd ~
+fi
 
 # Alle pacman-Pakete in einem Aufruf
 sudo pacman -S --noconfirm \
@@ -34,7 +37,8 @@ sudo systemctl enable --now libvirtd
 sudo usermod -aG libvirt "$USER"
 
 # Dotfiles deployen
-git clone https://github.com/SamysSabber/arch-installation.git
+rm -rf ~/arch-installation
+git clone https://github.com/SamysSabber/arch-installation.git ~/arch-installation
 mkdir -p ~/.config
-cp -r arch-installation/* ~/.config/
+cp -r ~/arch-installation/* ~/.config/
 rm -rf ~/arch-installation
