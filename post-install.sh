@@ -1,30 +1,39 @@
 #!/bin/bash
+set -e
 
+# Einmalig sudo-Passwort abfragen und im Hintergrund frisch halten
+sudo -v
+while true; do sudo -n true; sleep 60; done &
+SUDO_PID=$!
+trap "kill $SUDO_PID 2>/dev/null" EXIT
+
+# Multilib-Repo aktivieren (für steam)
+sudo sed -i '/^#\[multilib\]/,/^#Include/{s/^#//}' /etc/pacman.conf
+
+# Basis-Tools + yay bauen
 sudo pacman -Syu --needed base-devel git --noconfirm
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si --noconfirm
 cd ~
 
-#Apps
-sudo pacman -S alacritty neovim obsidian bitwarden steam btop \
-    spotify-launcher hyprshot hyprpolkitagent --noconfirm
+# Alle pacman-Pakete in einem Aufruf
+sudo pacman -S --noconfirm \
+    alacritty neovim obsidian bitwarden steam btop \
+    spotify-launcher hyprshot hyprpolkitagent \
+    ttf-jetbrains-mono-nerd noto-fonts-emoji \
+    pipewire pavucontrol easyeffects wireplumber pipewire-pulse \
+    qemu-full libvirt virt-manager
 
-yay -S visual-studio-code-bin vesktop zen-browser-bin peaclock protonup-qt brave-bin --noconfirm
+# AUR-Pakete
+yay -S --noconfirm visual-studio-code-bin vesktop zen-browser-bin peaclock protonup-qt brave-bin
 
-#Fonts und Icons
-sudo pacman -S ttf-jetbrains-mono-nerd noto-fonts-emoji --noconfirm
-
-#Sound Utils
-sudo pacman -S pipewire pavucontrol easyeffects wireplumber pipewire-pulse --noconfirm
+# Dienste aktivieren
 systemctl --user enable --now pipewire pipewire-pulse wireplumber
-
-#VM QEMU/KVM
-sudo pacman -S qemu-full libvirt virt-manager --noconfirm
 sudo systemctl enable --now libvirtd
-sudo usermod -aG libvirt $USER
+sudo usermod -aG libvirt "$USER"
 
-#Config
+# Dotfiles deployen
 git clone https://github.com/SamysSabber/arch-installation.git
 mkdir -p ~/.config
 cp -r arch-installation/* ~/.config/
