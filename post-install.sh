@@ -32,7 +32,7 @@ sudo pacman -S --noconfirm \
 yay -S --noconfirm visual-studio-code-bin vesktop zen-browser-bin peaclock protonup-qt brave-bin
 
 # Dienste aktivieren
-systemctl --user enable --now pipewire pipewire-pulse wireplumber
+sudo systemctl enable --now pipewire pipewire-pulse wireplumber
 sudo systemctl enable --now libvirtd
 sudo usermod -aG libvirt "$USER"
 
